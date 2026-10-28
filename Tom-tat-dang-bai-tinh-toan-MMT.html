@@ -61,6 +61,19 @@ nav>.navin{position:sticky;top:0;height:100vh;overflow:auto;padding:68px 18px 22
 .wrap.collapsed nav{transform:translateX(-100%);visibility:hidden;padding:0!important}
 main{min-width:0}
 @media (max-width:900px){nav{position:static!important;width:auto;border-right:0;border-bottom:1px solid var(--line)} nav>.navin{position:static;height:auto;max-height:none;padding:60px 16px 16px} nav>.navin>div{max-height:40vh;overflow:auto} .wrap.collapsed nav{display:none}}
+
+/* mobile drawer */
+.navbg{display:none}
+@media (max-width:900px){
+ nav,.wrap.collapsed nav{display:block!important;position:fixed!important;top:0;left:0;bottom:0;width:min(86vw,330px)!important;padding:0!important;border-right:1px solid var(--line);border-bottom:0;background:var(--bg);transform:translateX(-105%);visibility:hidden;z-index:30;transition:transform .25s ease,visibility .25s;box-shadow:8px 0 30px rgba(0,0,0,.25)}
+ .wrap.mopen nav{transform:none;visibility:visible}
+ nav>.navin{position:static;height:100%;overflow:auto;padding:64px 16px 24px}
+ nav>.navin>div{max-height:none!important;overflow:visible!important}
+ .navbg{display:block;position:fixed;inset:0;background:rgba(0,0,0,.45);opacity:0;pointer-events:none;transition:opacity .25s;z-index:25}
+ .wrap.mopen .navbg{opacity:1;pointer-events:auto}
+ #tocbtn{z-index:40}
+ main,.wrap.collapsed main{padding-top:60px!important}
+}
 </style></head><body>
 <button id="tocbtn" onclick="toggleToc()" title="Ẩn/hiện mục lục" aria-label="Ẩn/hiện mục lục">☰</button><div class="wrap"><nav><div class="navin"><div class="brand">MMT · Dạng bài tính toán</div><div class="sub">Tuần 1–7 · ôn thi giữa kỳ</div>
 <input id="q" placeholder="Lọc mục lục… (vd: CRC, subnet)"><div id="toc"><div class="toc">
@@ -125,7 +138,7 @@ main{min-width:0}
 <li><a href="#phụ-lục-đáp-án-tham-khảo-các-câu-tính-toán-trong-mmt-midmd">PHỤ LỤC – Đáp án tham khảo các câu tính toán trong MMT-mid.md</a></li>
 </ul>
 </div>
-</div></div></nav>
+</div></div></nav><div class="navbg" onclick="closeToc()"></div>
 <main><article><a class="back" href="index.html">← Trang chủ</a><h1 id="tóm-tắt-các-dạng-bài-tính-toán-mạng-máy-tính-tuần-1-7">Tóm tắt các dạng bài tính toán – Mạng máy tính (Tuần 1 → 7)</h1>
 <p>Tổng hợp từ slide Tuần 1–7, đề cương <code>mmt.md</code> và bộ câu hỏi <code>MMT-mid.md</code>.</p>
 <p><strong>Ký hiệu:</strong> ⭐ = dạng đã xuất hiện trong <code>MMT-mid.md</code> (kèm số câu) · 🔸 <em>Bổ sung</em> = không có trực tiếp trên slide nhưng là dạng chuẩn trong Tanenbaum, nên biết.</p>
@@ -1206,4 +1219,12 @@ try{if(localStorage.getItem('mmt-toc')==='0')setToc(true)}catch(e){}
 function fitTitle(){const t=document.querySelector('article>h1');if(!t)return;t.style.fontSize='';if(innerWidth<=900)return;let f=30;t.style.fontSize=f+'px';while(t.scrollWidth>t.clientWidth&&f>18){f-=0.5;t.style.fontSize=f+'px';}}
 addEventListener('resize',fitTitle);fitTitle();document.fonts&&document.fonts.ready.then(fitTitle);
 document.querySelector('.wrap').addEventListener('transitionend',fitTitle);
+</script><script>
+function closeToc(){const w=document.querySelector('.wrap');w.classList.remove('mopen');document.body.style.overflow='';}
+function toggleToc(){const w=document.querySelector('.wrap');
+ if(innerWidth<=900){const o=w.classList.toggle('mopen');document.body.style.overflow=o?'hidden':'';return;}
+ const c=!w.classList.contains('collapsed');w.classList.toggle('collapsed',c);try{localStorage.setItem('mmt-toc',c?'0':'1')}catch(e){}}
+document.querySelectorAll('nav a').forEach(a=>a.addEventListener('click',()=>{if(innerWidth<=900)closeToc();}));
+addEventListener('resize',()=>{if(innerWidth>900)closeToc();});
+addEventListener('keydown',e=>{if(e.key==='Escape')closeToc();});
 </script></body></html>

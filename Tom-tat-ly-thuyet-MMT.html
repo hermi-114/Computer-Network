@@ -15,7 +15,6 @@ body{margin:0;background:var(--bg);color:var(--ink);font:15.5px/1.65 "Be Vietnam
 nav{padding-top:68px!important}
 #tocbtn{position:fixed;left:18px;top:18px;z-index:20;width:42px;height:38px;display:grid;place-items:center;font-size:18px;border:1px solid var(--line);border-radius:10px;background:var(--paper);color:var(--ink);cursor:pointer}
 #tocbtn:hover{border-color:var(--accent);color:var(--accent)}
-.wrap.collapsed main{padding-left:76px}
 .back{display:inline-flex;align-items:center;gap:6px;margin-bottom:16px;padding:6px 12px;border:1px solid var(--line);border-radius:8px;color:var(--ink);text-decoration:none;font-size:13.5px;background:var(--bg)}
 .back:hover{border-color:var(--accent);color:var(--accent)}
 main>article{max-width:1040px;margin:0 auto}
@@ -94,6 +93,14 @@ strong{font-weight:650}
 table.mini{max-width:420px;margin:8px auto} table.mini td,table.mini th{text-align:center}
 article>h1:first-of-type{font-size:30px;line-height:1.25;margin:0 0 6px;padding:0;background:none;color:var(--ink);border-radius:0}
 @media (min-width:901px){article>h1:first-of-type{white-space:nowrap}}
+
+/* sidebar: absolute overlay */
+.wrap,.wrap.collapsed{display:block;position:relative}
+nav{position:absolute!important;left:0;top:0;bottom:0;width:300px;height:auto!important;overflow:visible!important;padding:0!important;background:var(--bg);border-right:1px solid var(--line);z-index:15;transition:transform .25s ease,visibility .25s}
+nav>.navin{position:sticky;top:0;height:100vh;overflow:auto;padding:68px 18px 22px}
+.wrap.collapsed nav{transform:translateX(-100%);visibility:hidden;padding:0!important}
+main{min-width:0}
+@media (max-width:900px){nav{position:static!important;width:auto;border-right:0;border-bottom:1px solid var(--line)} nav>.navin{position:static;height:auto;max-height:none;padding:60px 16px 16px} nav>.navin>div{max-height:40vh;overflow:auto} .wrap.collapsed nav{display:none}}
 </style></head><body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
 <marker id="ai" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0L10,5L0,10z" class="mk"/></marker>
@@ -102,7 +109,7 @@ article>h1:first-of-type{font-size:30px;line-height:1.25;margin:0 0 6px;padding:
 <linearGradient id="vis" x1="0" x2="1"><stop offset="0" stop-color="#7b3fe4"/><stop offset=".25" stop-color="#3b6fd1"/><stop offset=".5" stop-color="#3a9d5d"/><stop offset=".75" stop-color="#e0a020"/><stop offset="1" stop-color="#d6453d"/></linearGradient>
 <pattern id="hatch" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="4" height="8" fill="rgba(181,86,42,.35)"/></pattern>
 </defs></svg>
-<button id="tocbtn" onclick="toggleToc()" title="Ẩn/hiện mục lục" aria-label="Ẩn/hiện mục lục">☰</button><div class="wrap"><nav><div class="brand">MMT · Tóm tắt lý thuyết</div><div class="sub">Tuần 1–7 · ôn thi giữa kỳ</div>
+<button id="tocbtn" onclick="toggleToc()" title="Ẩn/hiện mục lục" aria-label="Ẩn/hiện mục lục">☰</button><div class="wrap"><nav><div class="navin"><div class="brand">MMT · Tóm tắt lý thuyết</div><div class="sub">Tuần 1–7 · ôn thi giữa kỳ</div>
 <input id="q" placeholder="Lọc mục lục… (vd: ARP, Manchester)"><div id="toc"><div class="toc">
 <ul>
 <li><a href="#tóm-tắt-lý-thuyết-mạng-máy-tính-tuần-1-7">Tóm tắt lý thuyết – Mạng máy tính (Tuần 1 → 7)</a></li>
@@ -169,7 +176,7 @@ article>h1:first-of-type{font-size:30px;line-height:1.25;margin:0 0 6px;padding:
 <li><a href="#phụ-lục-các-câu-hỏi-liên-quan-công-thức-c-λf">Phụ lục – Các câu hỏi liên quan công thức c = λf</a></li>
 </ul>
 </div>
-</div></nav>
+</div></div></nav>
 <main><article><a class="back" href="index.html">← Trang chủ</a><h1 id="tóm-tắt-lý-thuyết-mạng-máy-tính-tuần-1-7">Tóm tắt lý thuyết – Mạng máy tính (Tuần 1 → 7)</h1>
 <p>Bám theo khung đề cương <code>mmt.md</code> (23 mục), nội dung lấy từ slide Tuần 1–7. Các dạng bài tính toán chi tiết xem file <code>Tom-tat-dang-bai-tinh-toan-MMT</code>.</p>
 <p><strong>Ký hiệu:</strong> 🔑 = ý hay hỏi / dễ ra trắc nghiệm · ⚖️ = so sánh ưu/nhược.</p>

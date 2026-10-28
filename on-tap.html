@@ -1,0 +1,56 @@
+<!doctype html><html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Những câu hỏi ôn tập – MMT</title><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet"><style>
+:root{--bg:#f7f6f2;--paper:#fff;--ink:#1d2330;--muted:#5f6878;--line:#e3e0d8;--accent:#1f6f5c;--accent2:#b5562a;--soft:#eef3f0}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#14171c;--paper:#1b1f26;--ink:#e6e8ec;--muted:#9aa3b2;--line:#2c323c;--accent:#5cc4a6;--accent2:#e59266;--soft:#20302b}}
+:root[data-theme=dark]{--bg:#14171c;--paper:#1b1f26;--ink:#e6e8ec;--muted:#9aa3b2;--line:#2c323c;--accent:#5cc4a6;--accent2:#e59266;--soft:#20302b}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;background:radial-gradient(1200px 500px at 10% -10%,color-mix(in srgb,var(--accent) 14%,transparent),transparent),radial-gradient(900px 500px at 110% 10%,color-mix(in srgb,var(--accent2) 12%,transparent),transparent),var(--bg);color:var(--ink);font:16px/1.6 "Be Vietnam Pro",system-ui,sans-serif}
+.wrap{max-width:960px;margin:0 auto;padding:48px 20px 64px}
+.eyebrow{display:inline-block;font-size:12.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);background:var(--soft);border-radius:999px;padding:4px 12px}
+h1{font-size:clamp(30px,5vw,44px);line-height:1.15;margin:14px 0 10px;font-weight:800}
+.lead{color:var(--muted);max-width:640px;margin:0 0 32px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px}
+.card{position:relative;display:flex;flex-direction:column;gap:8px;background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:22px;color:inherit;text-decoration:none;transition:transform .18s,box-shadow .18s,border-color .18s;overflow:hidden}
+.card:hover{transform:translateY(-3px);border-color:var(--accent);box-shadow:0 12px 30px -12px color-mix(in srgb,var(--accent) 45%,transparent)}
+.card .ic{width:46px;height:46px;border-radius:12px;display:grid;place-items:center;font-size:22px;background:var(--soft)}
+.card h2{font-size:19px;margin:6px 0 0}
+.card p{margin:0;color:var(--muted);font-size:14.5px}
+.card .go{margin-top:auto;padding-top:10px;font-weight:600;color:var(--accent);font-size:14px}
+.card.hl{border-color:color-mix(in srgb,var(--accent2) 50%,var(--line))} .card.hl .ic{background:color-mix(in srgb,var(--accent2) 18%,transparent)}
+.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;gap:10px;flex-wrap:wrap}
+.btn{border:1px solid var(--line);background:var(--paper);color:var(--ink);border-radius:10px;padding:8px 14px;font:inherit;font-size:14px;cursor:pointer;text-decoration:none}
+.btn:hover{border-color:var(--accent);color:var(--accent)}
+.meta{display:flex;gap:6px;flex-wrap:wrap}
+.chip{font-size:12px;padding:2px 9px;border-radius:999px;background:var(--soft);color:var(--muted)}
+.chip.b{background:color-mix(in srgb,var(--accent2) 16%,transparent);color:var(--accent2)}
+.best{font-size:13px;color:var(--muted)} .best b{color:var(--accent)}
+footer{margin-top:40px;color:var(--muted);font-size:13px}
+</style><script>
+function toggleTheme(){const r=document.documentElement;const dark=r.dataset.theme?r.dataset.theme==='dark':matchMedia('(prefers-color-scheme: dark)').matches;r.dataset.theme=dark?'light':'dark';try{localStorage.setItem('mmt-theme',r.dataset.theme)}catch(e){}}
+try{const t=localStorage.getItem('mmt-theme');if(t)document.documentElement.dataset.theme=t}catch(e){}
+</script></head><body><div class="wrap">
+<div class="top"><a class="btn" href="index.html">← Trang chủ</a><button class="btn" onclick="toggleTheme()">◐ Giao diện</button></div>
+<span class="eyebrow">Mạng máy tính · Tuần 1–7</span><h1>Những câu hỏi ôn tập</h1>
+<p class="lead">10 đề trắc nghiệm, mỗi đề 20 câu (4 lý thuyết + 16 tính toán), trải đều 4 phần: Giới thiệu, Tầng vật lý, Tầng liên kết dữ liệu, Tầng mạng. Ưu tiên các dạng ⭐ đã xuất hiện trong đề ôn giữa kỳ; phần bổ sung 🔸 chỉ có ở đề 03, 06, 09. Không có câu nào trùng nhau giữa các đề.</p>
+<div class="grid"><a class="card" href="on-tap/de-01.html"><div class="ic">📝</div><h2>Đề số 01</h2>
+<div class="meta"><span class="chip">20 câu</span><span class="chip">4 lý thuyết</span><span class="chip">16 tính toán</span></div>
+<p class="best" data-exam="01">Chưa làm</p><span class="go">Làm bài →</span></a><a class="card" href="on-tap/de-02.html"><div class="ic">📝</div><h2>Đề số 02</h2>
+<div class="meta"><span class="chip">20 câu</span><span class="chip">4 lý thuyết</span><span class="chip">16 tính toán</span></div>
+<p class="best" data-exam="02">Chưa làm</p><span class="go">Làm bài →</span></a><a class="card hl" href="on-tap/de-03.html"><div class="ic">📝</div><h2>Đề số 03</h2>
+<div class="meta"><span class="chip">20 câu</span><span class="chip">4 lý thuyết</span><span class="chip">16 tính toán</span><span class="chip b">🔸 2 câu bổ sung</span></div>
+<p class="best" data-exam="03">Chưa làm</p><span class="go">Làm bài →</span></a><a class="card" href="on-tap/de-04.html"><div class="ic">📝</div><h2>Đề số 04</h2>
+<div class="meta"><span class="chip">20 câu</span><span class="chip">4 lý thuyết</span><span class="chip">16 tính toán</span></div>
+<p class="best" data-exam="04">Chưa làm</p><span class="go">Làm bài →</span></a><a class="card" href="on-tap/de-05.html"><div class="ic">📝</div><h2>Đề số 05</h2>
+<div class="meta"><span class="chip">20 câu</span><span class="chip">4 lý thuyết</span><span class="chip">16 tính toán</span></div>
+<p class="best" data-exam="05">Chưa làm</p><span class="go">Làm bài →</span></a><a class="card hl" href="on-tap/de-06.html"><div class="ic">📝</div><h2>Đề số 06</h2>
+<div class="meta"><span class="chip">20 câu</span><span class="chip">4 lý thuyết</span><span class="chip">16 tính toán</span><span class="chip b">🔸 1 câu bổ sung</span></div>
+<p class="best" data-exam="06">Chưa làm</p><span class="go">Làm bài →</span></a><a class="card" href="on-tap/de-07.html"><div class="ic">📝</div><h2>Đề số 07</h2>
+<div class="meta"><span class="chip">20 câu</span><span class="chip">4 lý thuyết</span><span class="chip">16 tính toán</span></div>
+<p class="best" data-exam="07">Chưa làm</p><span class="go">Làm bài →</span></a><a class="card" href="on-tap/de-08.html"><div class="ic">📝</div><h2>Đề số 08</h2>
+<div class="meta"><span class="chip">20 câu</span><span class="chip">4 lý thuyết</span><span class="chip">16 tính toán</span></div>
+<p class="best" data-exam="08">Chưa làm</p><span class="go">Làm bài →</span></a><a class="card hl" href="on-tap/de-09.html"><div class="ic">📝</div><h2>Đề số 09</h2>
+<div class="meta"><span class="chip">20 câu</span><span class="chip">4 lý thuyết</span><span class="chip">16 tính toán</span><span class="chip b">🔸 2 câu bổ sung</span></div>
+<p class="best" data-exam="09">Chưa làm</p><span class="go">Làm bài →</span></a><a class="card" href="on-tap/de-10.html"><div class="ic">📝</div><h2>Đề số 10</h2>
+<div class="meta"><span class="chip">20 câu</span><span class="chip">4 lý thuyết</span><span class="chip">16 tính toán</span></div>
+<p class="best" data-exam="10">Chưa làm</p><span class="go">Làm bài →</span></a></div>
+<footer>Điểm cao nhất được lưu trên trình duyệt này. Bản .md của từng đề nằm trong thư mục <code>on-tap/</code>.</footer></div>
+<script>document.querySelectorAll('.best').forEach(p=>{try{const b=localStorage.getItem('mmt-best-'+p.dataset.exam);if(b!==null)p.innerHTML='Điểm cao nhất: <b>'+b+'/20</b>'}catch(e){}});</script></body></html>

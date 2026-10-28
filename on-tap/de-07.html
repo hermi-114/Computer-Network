@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Đề ôn tập 07 – MMT</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f7f6f2;--paper:#fff;--ink:#1d2330;--muted:#5f6878;--line:#e3e0d8;--accent:#1f6f5c;--accent2:#b5562a;--soft:#eef3f0;--ok:#1f8a4c;--okbg:#e7f6ec;--bad:#d23c32;--badbg:#fdecea;--warn:#b7791f}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#14171c;--paper:#1b1f26;--ink:#e6e8ec;--muted:#9aa3b2;--line:#2c323c;--accent:#5cc4a6;--accent2:#e59266;--soft:#20302b;--ok:#4fd18b;--okbg:#173126;--bad:#ff6b61;--badbg:#3a1d1c;--warn:#f0b54a}}
+:root[data-theme=dark]{--bg:#14171c;--paper:#1b1f26;--ink:#e6e8ec;--muted:#9aa3b2;--line:#2c323c;--accent:#5cc4a6;--accent2:#e59266;--soft:#20302b;--ok:#4fd18b;--okbg:#173126;--bad:#ff6b61;--badbg:#3a1d1c;--warn:#f0b54a}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15.5px/1.6 "Be Vietnam Pro",system-ui,sans-serif}
+.bar{position:sticky;top:0;z-index:10;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.bar-in{max-width:860px;margin:0 auto;padding:10px 16px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.bar h1{font-size:17px;margin:0;flex:1;min-width:160px}
+.prog{font-size:13px;color:var(--muted)}
+.track{height:4px;background:var(--line)} .track i{display:block;height:100%;width:0;background:var(--accent);transition:width .25s}
+.btn{border:1px solid var(--line);background:var(--paper);color:var(--ink);border-radius:10px;padding:8px 14px;font:inherit;font-size:14px;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:6px;transition:transform .1s,border-color .15s}
+.btn:hover{border-color:var(--accent);color:var(--accent)} .btn:active{transform:scale(.97)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:#fff} .btn.primary:hover{color:#fff;filter:brightness(1.08)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+main{max-width:860px;margin:0 auto;padding:20px 16px 90px}
+.result{display:none;background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:20px;margin-bottom:20px}
+.result.show{display:block}
+.score{display:flex;gap:18px;align-items:center;flex-wrap:wrap}
+.ring{--p:0;width:96px;height:96px;border-radius:50%;background:conic-gradient(var(--ok) calc(var(--p)*1%),var(--badbg) 0);display:grid;place-items:center;flex:none}
+.ring b{width:76px;height:76px;border-radius:50%;background:var(--paper);display:grid;place-items:center;font-size:22px}
+.stat{display:flex;gap:10px;flex-wrap:wrap}
+.pill{border-radius:999px;padding:4px 12px;font-weight:600;font-size:14px}
+.pill.ok{background:var(--okbg);color:var(--ok)} .pill.bad{background:var(--badbg);color:var(--bad)} .pill.na{background:var(--soft);color:var(--muted)}
+.jump{margin-top:12px;display:flex;flex-wrap:wrap;gap:6px}
+.jump a{width:34px;height:34px;border-radius:8px;display:grid;place-items:center;font-size:13px;font-weight:600;text-decoration:none;border:1px solid var(--line);color:var(--ink)}
+.jump a.ok{background:var(--okbg);border-color:var(--ok);color:var(--ok)} .jump a.bad{background:var(--badbg);border-color:var(--bad);color:var(--bad)}
+.q{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:18px 20px;margin:0 0 16px;scroll-margin-top:80px;transition:border-color .2s,box-shadow .2s}
+.q.ok{border-color:var(--ok);box-shadow:inset 6px 0 0 var(--ok)}
+.q.bad{border:2px solid var(--bad);box-shadow:inset 8px 0 0 var(--bad);background:linear-gradient(90deg,var(--badbg),var(--paper) 55%)}
+.qh{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px}
+.num{font-weight:700;color:var(--accent)}
+.tag{font-size:11.5px;padding:2px 8px;border-radius:999px;background:var(--soft);color:var(--muted)}
+.tag.lt{background:color-mix(in srgb,var(--accent2) 18%,transparent);color:var(--accent2)}
+.verdict{margin-left:auto;font-size:13px;font-weight:700}
+.verdict.ok{color:var(--ok)} .verdict.bad{color:var(--bad)}
+.qt{margin:4px 0 12px;font-weight:500;word-break:break-word}
+.opts{display:grid;gap:8px}
+.opt{display:flex;gap:10px;align-items:flex-start;border:1.5px solid var(--line);border-radius:10px;padding:10px 12px;cursor:pointer;transition:border-color .15s,background .15s;word-break:break-word}
+.opt:hover{border-color:var(--accent)}
+.opt input{display:none}
+.opt .l{flex:none;width:26px;height:26px;border-radius:50%;border:1.5px solid var(--line);display:grid;place-items:center;font-weight:700;font-size:13px}
+.opt.sel{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 10%,transparent)} .opt.sel .l{background:var(--accent);border-color:var(--accent);color:#fff}
+.done .opt{cursor:default} .done .opt:hover{border-color:var(--line)}
+.opt.right{border-color:var(--ok);background:var(--okbg)} .opt.right .l{background:var(--ok);border-color:var(--ok);color:#fff}
+.opt.wrong{border-color:var(--bad);background:var(--badbg)} .opt.wrong .l{background:var(--bad);border-color:var(--bad);color:#fff}
+.mono,.opt .t{font-variant-numeric:tabular-nums}
+.ex{display:none;margin-top:12px;padding:10px 14px;border-radius:10px;background:var(--soft);border-left:4px solid var(--accent);font-size:14.5px}
+.done .ex{display:block}
+.q.bad .ex{border-left-color:var(--bad)}
+.foot{position:fixed;bottom:0;left:0;right:0;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(8px);border-top:1px solid var(--line)}
+.foot-in{max-width:860px;margin:0 auto;padding:10px 16px;display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap}
+.onlybad .q.ok{display:none}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.45);display:none;place-items:center;z-index:50;padding:16px}
+.modal.show{display:grid} .modal>div{background:var(--paper);border-radius:14px;padding:20px;max-width:380px;border:1px solid var(--line)}
+.modal p{margin:0 0 14px} .modal .row{display:flex;gap:8px;justify-content:flex-end}
+@media (max-width:560px){.bar h1{font-size:15px}.q{padding:14px}.btn{padding:7px 11px;font-size:13px}}
+</style></head><body>
+<div class="bar"><div class="bar-in">
+<a class="btn" href="../on-tap.html">← Những câu hỏi ôn tập</a>
+<h1>Đề ôn tập số 07</h1>
+<span class="prog" id="prog">0/20</span>
+<button class="btn" id="theme" title="Đổi giao diện">◐</button>
+</div><div class="track"><i id="trk"></i></div></div>
+<main>
+<section class="result" id="result"></section>
+<div id="list"></div>
+</main>
+<div class="foot"><div class="foot-in">
+<button class="btn" id="shuffle">⤮ Xáo trộn câu hỏi</button>
+<button class="btn" id="filter" hidden>Chỉ xem câu sai</button>
+<button class="btn" id="retry" hidden>↺ Làm lại</button>
+<button class="btn primary" id="submit">Nộp bài</button>
+</div></div>
+<div class="modal" id="modal"><div><p id="mtext"></p><div class="row"><button class="btn" id="mno">Làm tiếp</button><button class="btn primary" id="myes">Vẫn nộp</button></div></div></div>
+<script>
+const EXAM='07';
+const Q=[{"q": "Kênh băng thông 1 MHz, SNR = 30 dB, dùng tín hiệu 8 mức. Tốc độ tối đa thực tế là?", "options": ["5 Mbps", "10 Mbps", "16 Mbps", "6 Mbps"], "correct": 3, "expl": "Shannon: 10 Mbps; Nyquist: 2×1 MHz×3 = 6 Mbps → lấy giá trị nhỏ hơn (Nyquist) = 6 Mbps.", "part": "Tầng vật lý", "topic": "Nyquist + Shannon", "star": true, "kind": "TT"}, {"q": "Muốn truyền 8 Mbps trên kênh băng thông 1 MHz. Theo Shannon, tỷ số tín hiệu/nhiễu tối thiểu (dB) xấp xỉ?", "options": ["80 dB", "48,1 dB", "24,1 dB", "9 dB"], "correct": 2, "expl": "C/B = 8 → S/N = 2^8 − 1 = 255 → 10·log₁₀255 ≈ 24,1 dB.", "part": "Tầng vật lý", "topic": "Shannon", "star": true, "kind": "TT"}, {"q": "Tách khung bằng byte cờ và chèn byte. Dữ liệu: D B ESC ESC FLAG D. Sau khi chèn byte (chưa tính FLAG đầu/cuối khung) là?", "options": ["D B ESC ESC ESC ESC ESC FLAG D", "D B ESC ESC ESC ESC FLAG D", "D B ESC ESC ESC FLAG D", "D B ESC ESC ESC ESC FLAG ESC D"], "correct": 0, "expl": "Chèn ESC trước MỌI byte FLAG và MỌI byte ESC trong dữ liệu.", "part": "Tầng liên kết dữ liệu", "topic": "Chèn byte", "star": true, "kind": "TT"}, {"q": "Nhược điểm chính của NRZ là?", "options": ["Không biểu diễn được bit 0", "Cần gấp đôi băng thông so với Manchester", "Chuỗi dài bit 0 hoặc bit 1 không có chuyển mức nên dễ mất đồng bộ", "Dùng 3 mức điện áp"], "correct": 2, "expl": "Không có chuyển mức thì bên nhận không đếm được số bit.", "part": "Tầng vật lý", "topic": "Mã hóa", "star": false, "kind": "LT"}, {"q": "Prefix /17 tương ứng với subnet mask nào?", "options": ["255.255.0.0", "255.255.128.0", "255.128.0.0", "255.255.192.0"], "correct": 1, "expl": "/17: 17 bit 1 đầu tiên → 255.255.128.0.", "part": "Tầng mạng", "topic": "CIDR ↔ mask", "star": true, "kind": "TT"}, {"q": "Máy 192.32.118.70/24 (gateway 192.32.118.1) muốn gửi gói IP tới 192.32.118.177. Nó gửi ARP request để hỏi MAC của ai?", "options": ["Không cần ARP, dùng MAC broadcast FF:FF:FF:FF:FF:FF làm đích", "MAC của default gateway 192.32.118.1", "MAC của máy đích 192.32.118.177", "MAC của DNS server"], "correct": 2, "expl": "Cùng NetID 192.32.118.0/24 → gửi trực tiếp, hỏi MAC máy đích.", "part": "Tầng mạng", "topic": "ARP", "star": false, "kind": "TT"}, {"q": "Mạng 128.208.0.0/16 được chia: Toán–Cơ–Tin 128.208.128.0/17, Hóa 128.208.0.0/18, Sinh 128.208.96.0/19 (128.208.64.0/19 trống). Địa chỉ 128.208.222.79 thuộc khối nào?", "options": ["khối trống 128.208.64.0/19", "Toán–Cơ–Tin (128.208.128.0/17)", "Sinh (128.208.96.0/19)", "Hóa (128.208.0.0/18)"], "correct": 1, "expl": "Octet 3 = 222 = 11011110₂ → xét các bit đầu: 1… → /17; 00… → /18; 011… → Sinh; 010… → trống.", "part": "Tầng mạng", "topic": "IP thuộc mạng con nào", "star": true, "kind": "TT"}, {"q": "Ghép 12 kênh, mỗi kênh băng thông 3,1 kHz, giữa hai kênh kề nhau có dải bảo vệ 500 Hz. Băng thông tối thiểu của đường truyền FDM là?", "options": ["42,7 kHz", "43,7 kHz", "37,2 kHz", "43,2 kHz"], "correct": 0, "expl": "B = n·B_kênh + (n−1)·g = 12×3,1 kHz + 11×500 Hz = 42,7 kHz.", "part": "Tầng vật lý", "topic": "FDM", "star": true, "kind": "TT"}, {"q": "Switch có bảng MAC rỗng, các máy A, B, C nối vào các cổng khác nhau. Lần lượt gửi: (1) B→C; (2) C→A; (3) B→A; (4) A→B. Những khung nào bị flood?", "options": ["(4)", "(1), (2), (3), (4)", "(1), (2)", "(1), (2), (3)"], "correct": 3, "expl": "Switch học địa chỉ NGUỒN; khung có đích chưa được học thì flood. Đi lần lượt từng khung để cập nhật bảng.", "part": "Tầng liên kết dữ liệu", "topic": "Switch học MAC", "star": true, "kind": "TT"}, {"q": "Cáp quang dài 1.000 km, tín hiệu lan truyền với tốc độ 2·10⁵ km/s. Độ trễ lan truyền một chiều là?", "options": ["5 ms", "10 ms", "3,33 ms", "50 ms"], "correct": 0, "expl": "t = d/v = 1.000/200.000 s = 5 ms.", "part": "Giới thiệu", "topic": "Trễ lan truyền", "star": true, "kind": "TT"}, {"q": "Dịch vụ \"không kết nối, có xác nhận\" của tầng liên kết thường dùng cho?", "options": ["Cáp quang đường trục", "Ethernet có dây", "Liên kết vệ tinh hướng kết nối", "Wi-Fi (802.11)"], "correct": 3, "expl": "Kênh không dây kém tin cậy nên mỗi khung cần ACK; Ethernet thì không xác nhận.", "part": "Tầng liên kết dữ liệu", "topic": "Dịch vụ tầng 2", "star": false, "kind": "LT"}, {"q": "Địa chỉ nào sau đây là địa chỉ IP riêng (private)?", "options": ["8.32.44.144", "192.169.42.155", "10.14.31.53", "11.209.24.144"], "correct": 2, "expl": "Dải private: 10.0.0.0/8, 172.16.0.0/12 (172.16–172.31), 192.168.0.0/16; các địa chỉ khác là công cộng.", "part": "Tầng mạng", "topic": "IP riêng", "star": true, "kind": "TT"}, {"q": "Đã phát khung 0 đến 6; khung 3 và khung 5 bị mất. Số khung phải gửi lại với Go-Back-N và Selective Repeat?", "options": ["5 và 2", "2 và 2", "4 và 1", "4 và 2"], "correct": 3, "expl": "GBN gửi lại từ khung mất đầu tiên (3) đến 6: 4; SR gửi lại đúng 2 khung bị mất.", "part": "Tầng liên kết dữ liệu", "topic": "GBN / SR", "star": true, "kind": "TT"}, {"q": "Chia mạng 192.229.0.0/22 thành 8 mạng con bằng nhau. Địa chỉ của mạng con thứ 8 (đếm từ 1) là?", "options": ["192.229.4.0/25", "192.229.3.128/25", "192.229.1.192/26", "192.229.3.128/22"], "correct": 1, "expl": "8 mạng con → mượn 3 bit → /25, mỗi khối 128 địa chỉ; mạng thứ 8 = 192.229.0.0 + 7×128 = 192.229.3.128.", "part": "Tầng mạng", "topic": "Chia mạng con", "star": true, "kind": "TT"}, {"q": "Nhược điểm \"count-to-infinity\" thuộc về thuật toán nào?", "options": ["Distance Vector", "Dijkstra", "Flooding", "Link State"], "correct": 0, "expl": "Tin xấu lan chậm vì router không biết đường hàng xóm báo có đi qua chính nó.", "part": "Tầng mạng", "topic": "Định tuyến", "star": false, "kind": "LT"}, {"q": "Dữ liệu M = 110101, đa thức sinh G = 1101 (x^3 + x^2 + 1). Chuỗi CRC (phần dư) gắn vào cuối là?", "options": ["010", "001", "000", "101"], "correct": 3, "expl": "Thêm 3 bit 0 vào M rồi chia modulo 2 (XOR) cho 1101 → số dư 101; gửi 110101101.", "part": "Tầng liên kết dữ liệu", "topic": "CRC", "star": true, "kind": "TT"}, {"q": "Điểm khác biệt về thứ tự ra đời giữa OSI và TCP/IP là?", "options": ["OSI có mô hình trước rồi mới có giao thức; TCP/IP có giao thức trước rồi mô hình mô tả sau", "Cả hai ra đời đồng thời từ ISO", "Cả hai đều có giao thức trước", "OSI có giao thức trước, TCP/IP có mô hình trước"], "correct": 0, "expl": "OSI (ISO) thiết kế mô hình tham chiếu trước; TCP/IP (DARPA) có giao thức chạy thật trước.", "part": "Giới thiệu", "topic": "TCP/IP", "star": false, "kind": "LT"}, {"q": "Bên nhận HDLC nhận được phần dữ liệu (đã bỏ cờ): 0011111011111011100. Dữ liệu gốc là?", "options": ["0011111011111011100", "00111101111011100", "00111111111111100", "001111101111101110"], "correct": 2, "expl": "Sau mỗi 5 bit 1 liên tiếp, xóa bit 0 ngay sau đó.", "part": "Tầng liên kết dữ liệu", "topic": "Bỏ chèn bit", "star": true, "kind": "TT"}, {"q": "Phần dư của phép chia đa thức (x^4 + x^3 + 1) cho (x^3 + 1) theo modulo 2 là?", "options": ["1", "x", "x^2 + 1", "x + 1"], "correct": 1, "expl": "Chia modulo 2 (XOR) 11001 cho 1001 được dư 010 → x.", "part": "Tầng liên kết dữ liệu", "topic": "Chia đa thức", "star": true, "kind": "TT"}, {"q": "Tín hiệu NRZI (bit 1 = đổi mức, bit 0 = giữ mức). Mức ngay trước là L; các khoảng bit tiếp theo có mức: H L H H L L. Chuỗi bit là?", "options": ["110101", "111010", "000101", "101100"], "correct": 1, "expl": "So từng mức với mức trước: khác → 1, giống → 0 (bắt đầu so với L) → 111010.", "part": "Tầng vật lý", "topic": "NRZI", "star": true, "kind": "TT"}];
+const L='ABCD';
+let order=Q.map((_,i)=>i), ans={}, done=false;
+const $=s=>document.querySelector(s);
+function render(){
+  const list=$('#list'); list.innerHTML='';
+  order.forEach((qi,pos)=>{const q=Q[qi];
+    const card=document.createElement('article'); card.className='q'; card.id='q'+qi;
+    const h=document.createElement('div'); h.className='qh';
+    const n=document.createElement('span'); n.className='num'; n.textContent='Câu '+(pos+1); h.appendChild(n);
+    const t1=document.createElement('span'); t1.className='tag'+(q.kind==='LT'?' lt':''); t1.textContent=q.kind==='LT'?'Lý thuyết':'Tính toán'; h.appendChild(t1);
+    const t2=document.createElement('span'); t2.className='tag'; t2.textContent=q.part+' · '+q.topic+(q.star?' ⭐':''); h.appendChild(t2);
+    const v=document.createElement('span'); v.className='verdict'; h.appendChild(v);
+    card.appendChild(h);
+    const qt=document.createElement('div'); qt.className='qt'; qt.textContent=q.q; card.appendChild(qt);
+    const os=document.createElement('div'); os.className='opts';
+    q.options.forEach((o,k)=>{const lab=document.createElement('label'); lab.className='opt';
+      lab.innerHTML='<input type="radio"><span class="l"></span><span class="t"></span>';
+      lab.querySelector('.l').textContent=L[k]; lab.querySelector('.t').textContent=o;
+      lab.onclick=e=>{e.preventDefault(); if(done)return; ans[qi]=k; paint(card,qi); progress();};
+      os.appendChild(lab);});
+    card.appendChild(os);
+    const ex=document.createElement('div'); ex.className='ex'; card.appendChild(ex);
+    list.appendChild(card); paint(card,qi);
+  });
+}
+function paint(card,qi){const q=Q[qi];
+  card.querySelectorAll('.opt').forEach((el,k)=>{el.classList.toggle('sel',!done&&ans[qi]===k);
+    el.classList.toggle('right',done&&k===q.correct); el.classList.toggle('wrong',done&&ans[qi]===k&&k!==q.correct);});
+  card.classList.toggle('done',done);
+  const v=card.querySelector('.verdict'), ex=card.querySelector('.ex');
+  if(done){const ok=ans[qi]===q.correct; card.classList.toggle('ok',ok); card.classList.toggle('bad',!ok);
+    v.className='verdict '+(ok?'ok':'bad'); v.textContent=ok?'✓ Đúng':(ans[qi]===undefined?'✗ Chưa làm':'✗ Sai');
+    ex.innerHTML=''; const b=document.createElement('b'); b.textContent='Đáp án '+L[q.correct]+'. '; ex.appendChild(b); ex.appendChild(document.createTextNode(q.expl));}
+  else{card.classList.remove('ok','bad'); v.textContent='';}
+}
+function progress(){const n=Object.keys(ans).length; $('#prog').textContent=n+'/'+Q.length+' câu đã chọn'; $('#trk').style.width=(n/Q.length*100)+'%';}
+function submit(){done=true; render();
+  let ok=0; Q.forEach((q,i)=>{if(ans[i]===q.correct)ok++;});
+  const na=Q.length-Object.keys(ans).length, bad=Q.length-ok, pct=Math.round(ok/Q.length*100);
+  const r=$('#result'); r.classList.add('show');
+  r.innerHTML=`<div class="score"><div class="ring" style="--p:${pct}"><b>${ok}/${Q.length}</b></div><div><div style="font-size:18px;font-weight:700;margin-bottom:6px">${pct>=80?'Rất tốt! 🎉':pct>=50?'Khá ổn, xem lại câu sai nhé':'Cần ôn thêm'}</div><div class="stat"><span class="pill ok">✓ ${ok} đúng</span><span class="pill bad">✗ ${bad} sai</span>${na?`<span class="pill na">${na} câu bỏ trống (tính là sai)</span>`:''}</div></div></div><div class="jump"></div>`;
+  const j=r.querySelector('.jump'); order.forEach((qi,pos)=>{const a=document.createElement('a'); a.href='#q'+qi; a.textContent=pos+1; a.className=ans[qi]===Q[qi].correct?'ok':'bad'; j.appendChild(a);});
+  $('#submit').hidden=true; $('#shuffle').disabled=true; $('#retry').hidden=false; $('#filter').hidden=false;
+  try{const k='mmt-best-'+EXAM; const best=+(localStorage.getItem(k)||-1); if(ok>best)localStorage.setItem(k,ok); localStorage.setItem('mmt-last-'+EXAM,ok);}catch(e){}
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+$('#submit').onclick=()=>{const na=Q.length-Object.keys(ans).length; if(na){$('#mtext').textContent=`Còn ${na} câu chưa chọn đáp án. Vẫn nộp bài?`; $('#modal').classList.add('show');} else submit();};
+$('#mno').onclick=()=>$('#modal').classList.remove('show');
+$('#myes').onclick=()=>{$('#modal').classList.remove('show'); submit();};
+$('#shuffle').onclick=()=>{for(let i=order.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[order[i],order[j]]=[order[j],order[i]];} render(); window.scrollTo({top:0,behavior:'smooth'});};
+$('#retry').onclick=()=>{ans={}; done=false; $('#result').classList.remove('show'); $('#submit').hidden=false; $('#shuffle').disabled=false; $('#retry').hidden=true; $('#filter').hidden=true; $('#list').classList.remove('onlybad'); $('#filter').textContent='Chỉ xem câu sai'; render(); progress(); window.scrollTo({top:0});};
+$('#filter').onclick=()=>{const on=$('#list').classList.toggle('onlybad'); $('#filter').textContent=on?'Xem tất cả':'Chỉ xem câu sai';};
+$('#theme').onclick=()=>{const r=document.documentElement; const dark=r.dataset.theme?r.dataset.theme==='dark':matchMedia('(prefers-color-scheme: dark)').matches; r.dataset.theme=dark?'light':'dark'; try{localStorage.setItem('mmt-theme',r.dataset.theme)}catch(e){}};
+try{const t=localStorage.getItem('mmt-theme'); if(t)document.documentElement.dataset.theme=t;}catch(e){}
+render(); progress();
+</script></body></html>

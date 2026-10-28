@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Mô phỏng NRZ – Non-Return-to-Zero – MMT</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f7f6f2;--paper:#fff;--ink:#1d2330;--muted:#5f6878;--line:#e3e0d8;--accent:#1f6f5c;--accent2:#b5562a;--soft:#eef3f0;--bad:#d23c32;--clk:#8a93a3}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#14171c;--paper:#1b1f26;--ink:#e6e8ec;--muted:#9aa3b2;--line:#2c323c;--accent:#5cc4a6;--accent2:#e59266;--soft:#20302b;--bad:#ff6b61;--clk:#6b7383}}
+:root[data-theme=dark]{--bg:#14171c;--paper:#1b1f26;--ink:#e6e8ec;--muted:#9aa3b2;--line:#2c323c;--accent:#5cc4a6;--accent2:#e59266;--soft:#20302b;--bad:#ff6b61;--clk:#6b7383}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15.5px/1.6 "Be Vietnam Pro",system-ui,sans-serif}
+.wrap{max-width:1040px;margin:0 auto;padding:18px 16px 60px}
+.top{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:12px}
+.btn{border:1px solid var(--line);background:var(--paper);color:var(--ink);border-radius:10px;padding:7px 13px;font:inherit;font-size:14px;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:6px}
+.btn:hover{border-color:var(--accent);color:var(--accent)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:#fff} .btn.primary:hover{color:#fff;filter:brightness(1.08)}
+.btn.on{border-color:var(--accent);color:var(--accent);background:var(--soft)}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin-left:auto}
+.tabs a{font-size:13.5px;padding:6px 12px;border-radius:999px;border:1px solid var(--line);text-decoration:none;color:var(--muted);background:var(--paper)}
+.tabs a.cur{background:var(--accent);border-color:var(--accent);color:#fff}
+h1{font-size:clamp(24px,4vw,32px);margin:6px 0 4px;font-weight:800}
+.lead{color:var(--muted);margin:0 0 16px}
+.panel{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:16px 18px;margin-bottom:14px}
+.rules{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
+.rule{border-radius:12px;padding:10px 12px;background:var(--soft);font-size:14px}
+.rule b{display:block;margin-bottom:2px}
+.ctrl{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.ctrl label{font-size:13.5px;color:var(--muted);display:flex;align-items:center;gap:6px}
+input[type=text]{font:600 15px "JetBrains Mono",monospace;letter-spacing:.12em;padding:7px 10px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--ink);width:210px}
+input[type=text].err{border-color:var(--bad)}
+select{font:inherit;font-size:14px;padding:6px 8px;border-radius:8px;border:1px solid var(--line);background:var(--bg);color:var(--ink)}
+input[type=range]{accent-color:var(--accent)}
+.presets{display:flex;gap:6px;flex-wrap:wrap}
+.presets button{font:600 12.5px "JetBrains Mono",monospace;padding:4px 9px;border-radius:8px;border:1px dashed var(--line);background:none;color:var(--muted);cursor:pointer}
+.presets button:hover{border-color:var(--accent);color:var(--accent)}
+.stage{overflow-x:auto}
+svg{display:block;min-width:560px;width:100%;height:auto}
+svg text{font-family:"Be Vietnam Pro",sans-serif;fill:var(--ink)}
+.lbl{font-size:13px;font-weight:600} .mut{fill:var(--muted)} .bitt{font:700 16px "JetBrains Mono",monospace} .dec{font:700 16px "JetBrains Mono",monospace;fill:var(--accent2)}
+.grid{stroke:var(--line);stroke-dasharray:4 4} .mid{stroke:var(--line);stroke-dasharray:2 5}
+.cell{fill:var(--accent);opacity:.09}
+.clk{fill:none;stroke:var(--clk);stroke-width:1.8}
+.ref{fill:none;stroke:var(--muted);stroke-width:2;stroke-dasharray:6 4}
+.sig{fill:none;stroke:var(--accent);stroke-width:3.2;stroke-linejoin:round;stroke-linecap:round}
+.pen{fill:var(--accent2)}
+.tr{fill:var(--accent2)}
+.warn{fill:var(--bad);opacity:.12} .warnt{fill:var(--bad);font-size:11.5px;font-weight:600}
+.lvl{font-size:11px;fill:var(--muted)}
+.explain{min-height:52px;font-size:15px;border-left:4px solid var(--accent2);padding:8px 12px;border-radius:8px;background:var(--soft);margin-top:10px}
+.explain .k{font:700 15px "JetBrains Mono",monospace;color:var(--accent2)}
+.stats{display:flex;gap:16px;flex-wrap:wrap;font-size:13.5px;color:var(--muted);margin-top:8px}
+.stats b{color:var(--ink)}
+.note{font-size:14px;color:var(--muted)}
+.note h3{color:var(--ink);font-size:16px;margin:4px 0 6px}
+</style></head><body><div class="wrap">
+<div class="top"><a class="btn" href="../mo-phong.html">← Mô phỏng</a>
+<nav class="tabs"><a href="nrz.html" class="cur">NRZ</a><a href="nrzi.html">NRZI</a><a href="manchester.html">Manchester</a><a href="diff-manchester.html">Differential Manchester</a></nav><button class="btn" id="theme">◐</button></div>
+<h1>NRZ – Non-Return-to-Zero</h1><p class="lead">Mỗi bit giữ một mức điện áp suốt khoảng bit. Đơn giản nhất, tốn ít băng thông nhất, nhưng dễ mất đồng bộ.</p>
+<div class="panel rules"><div class="rule"><b>Bit 1</b>Mức cao (H) suốt khoảng bit</div><div class="rule"><b>Bit 0</b>Mức thấp (L) suốt khoảng bit</div><div class="rule"><b>Băng thông</b>Tốc độ R bps cần B ≥ R/2 Hz (Nyquist, 2 mức)</div></div>
+<div class="panel">
+ <div class="ctrl">
+  <label>Chuỗi bit <input type="text" id="bits" maxlength="16" value="10110001"></label>
+  
+  <button class="btn primary" id="play">▶ Chạy</button>
+  <button class="btn" id="step">⏭ Từng bit</button>
+  <button class="btn" id="reset">⏮ Đầu</button>
+  <button class="btn" id="flip" title="Đảo hai dây tín hiệu (đổi cực)">⇅ Đảo cực dây</button>
+  <label>Tốc độ <input type="range" id="speed" min="0.3" max="3" step="0.1" value="1"></label>
+ </div>
+ <div class="ctrl" style="margin-top:8px"><span class="note">Mẫu:</span><div class="presets"><button data-p="10110001">10110001</button><button data-p="00000000">00000000</button><button data-p="11111111">11111111</button><button data-p="10101010">10101010</button><button data-p="rand">ngẫu nhiên</button></div></div>
+ <div class="stage" style="margin-top:12px"><svg id="svg"></svg></div>
+ <div class="explain" id="explain">Bấm <b>▶ Chạy</b> hoặc <b>⏭ Từng bit</b> để xem tín hiệu được tạo ra.</div>
+ <div class="stats" id="stats"></div>
+</div>
+<div class="panel note"><h3>Ghi nhớ</h3>Ưu điểm: đơn giản, băng thông thấp. Nhược điểm: chuỗi dài 0 hoặc 1 không có chuyển mức → mất đồng bộ đồng hồ; đấu ngược dây thì đảo toàn bộ dữ liệu. Các mã NRZI và Manchester ra đời để khắc phục.</div>
+</div>
+<script>
+const MODE='nrz';
+const $=s=>document.querySelector(s);
+let bits=[],enc=[],T=0,playing=false,last=null,flip=false;
+const CW=74,X0=150;
+function startLevel(){const s=$('#start');return s?+s.value:0;}
+function encode(b){const out=[];let p=startLevel();
+ for(const x of b){let a,c,tStart=false,tMid=false;
+  if(MODE==='nrz'){a=c=x;}
+  else if(MODE==='nrzi'){if(x)p^=1;a=c=p;tStart=!!x;}
+  else if(MODE==='man'){a=x?0:1;c=1-a;tMid=true;}
+  else{a=x?1-p:p;c=1-a;p=c;tStart=!!x;tMid=true;}
+  if(MODE==='nrz'||MODE==='nrzi')p=c;
+  out.push({a,c,tStart,tMid});}
+ return out;}
+function decode(sig){const r=[];let p=startLevel()^(flip?1:0);
+ sig.forEach((s,i)=>{let b;
+  if(MODE==='nrz')b=s.a;
+  else if(MODE==='nrzi')b=s.a!==p?1:0;
+  else if(MODE==='man')b=(s.a===0&&s.c===1)?1:0;
+  else b=s.a!==p?1:0;
+  p=s.c;r.push(b);});
+ return r;}
+function why(i){const x=bits[i],s=enc[i],H=v=>v?'cao (H)':'thấp (L)';
+ const prev=i?enc[i-1].c:startLevel();
+ if(MODE==='nrz')return `Bit <span class="k">${x}</span> → giữ mức ${H(s.a)} suốt khoảng bit.`;
+ if(MODE==='nrzi')return x?`Bit <span class="k">1</span> → ĐỔI mức ở đầu bit: ${H(prev)} → ${H(s.a)}.`:`Bit <span class="k">0</span> → GIỮ nguyên mức ${H(s.a)}.`;
+ if(MODE==='man')return x?`Bit <span class="k">1</span> → thấp → cao (L→H), chuyển mức đi LÊN ở giữa bit.`:`Bit <span class="k">0</span> → cao → thấp (H→L), chuyển mức đi XUỐNG ở giữa bit.`;
+ return (x?`Bit <span class="k">1</span> → CÓ đổi mức ở đầu bit (mức trước ${H(prev)} → nửa đầu ${H(s.a)})`:`Bit <span class="k">0</span> → KHÔNG đổi mức ở đầu bit (nửa đầu vẫn ${H(s.a)})`)+'; luôn đổi mức ở giữa bit.';}
+function rebuild(){const v=$('#bits').value.replace(/\s/g,'');const ok=/^[01]{1,16}$/.test(v);$('#bits').classList.toggle('err',!ok);if(!ok)return;
+ bits=[...v].map(Number);enc=encode(bits);T=Math.min(T,bits.length);draw();}
+function lv(y0,v){return v?y0:y0+56;}
+function draw(){const svg=$('#svg'),n=bits.length,W=X0+n*CW+30;
+ const rows=MODE==='man'?['clk','nrz','sig','dec']:['clk','sig','dec'];
+ const RY={clk:70,nrz:150,sig:MODE==='man'?240:160,dec:MODE==='man'?345:265};const H=RY.dec+30;
+ svg.setAttribute('viewBox',`0 0 ${W} ${H}`);let s='';
+ const cur=Math.min(Math.floor(T),n-1);
+ if(T>0&&T<n+1e-9)s+=`<rect class="cell" x="${X0+cur*CW}" y="36" width="${CW}" height="${H-40}" rx="6"/>`;
+ for(let i=0;i<=n;i++)s+=`<line class="grid" x1="${X0+i*CW}" y1="34" x2="${X0+i*CW}" y2="${H-6}"/>`;
+ for(let i=0;i<n;i++)s+=`<line class="mid" x1="${X0+i*CW+CW/2}" y1="${RY.sig-6}" x2="${X0+i*CW+CW/2}" y2="${RY.sig+62}"/>`;
+ bits.forEach((b,i)=>s+=`<text class="bitt" x="${X0+i*CW+CW/2}" y="26" text-anchor="middle">${b}</text>`);
+ s+=`<text class="lbl" x="12" y="26">Dữ liệu</text>`;
+ // clock
+ let d='';for(let i=0;i<n;i++){const x=X0+i*CW,y0=RY.clk-20;d+=`${i?'L':'M'}${x},${y0+30} L${x},${y0} L${x+CW/2},${y0} L${x+CW/2},${y0+30} L${x+CW},${y0+30} `;}
+ s+=`<text class="lbl" x="12" y="${RY.clk}">Clock</text><path class="clk" d="${d}"/>`;
+ if(MODE==='man'){let d2='';bits.forEach((b,i)=>{const y=b?RY.nrz-20:RY.nrz+20,x=X0+i*CW;d2+=`${i?'L':'M'}${x},${y} L${x+CW},${y} `;});
+  s+=`<text class="lbl" x="12" y="${RY.nrz-4}">NRZ</text><text class="lvl" x="12" y="${RY.nrz+14}">(tham chiếu)</text><path class="ref" d="${d2}"/>`;}
+ // signal
+ const y0=RY.sig,F=v=>flip?1-v:v;
+ s+=`<text class="lbl" x="12" y="${y0+24}">${'NRZ'}</text><text class="lvl" x="12" y="${y0+42}">${flip?'(đã đảo cực)':''}</text>`;
+ s+=`<text class="lvl" x="${X0-8}" y="${y0+4}" text-anchor="end">H</text><text class="lvl" x="${X0-8}" y="${y0+60}" text-anchor="end">L</text>`;
+ // long no-transition warnings (full sequence)
+ const pts=[];let pv=F(startLevel());pts.push([X0-18,lv(y0,pv)]);
+ const lvls=[];enc.forEach((e,i)=>{lvls.push([i,F(e.a)],[i+.5,F(e.c)]);});
+ let runStart=0,prevL=pv;const runs=[];
+ lvls.forEach(([t,l])=>{if(l!==prevL){if(t-runStart>=3)runs.push([runStart,t]);runStart=t;prevL=l;}});
+ if(n-runStart>=3)runs.push([runStart,n]);
+ runs.forEach(([a,b])=>{if(a<T){const bb=Math.min(b,T);s+=`<rect class="warn" x="${X0+a*CW}" y="${y0-12}" width="${(bb-a)*CW}" height="80" rx="6"/>`;if(bb-a>=2.5)s+=`<text class="warnt" x="${X0+(a+bb)/2*CW}" y="${y0+82}" text-anchor="middle">⚠ ${fmtN(b-a)} bit không chuyển mức</text>`;}});
+ // path up to T
+ let path=`M${X0-18},${lv(y0,pv)} L${X0},${lv(y0,pv)}`;let ly=lv(y0,pv);let px=X0,py=ly;
+ for(const [t,l] of lvls){if(t>T)break;const x=X0+t*CW,y=lv(y0,l);path+=` L${x},${y}`;const xe=X0+Math.min(t+.5,T)*CW;path+=` L${xe},${y}`;px=xe;py=y;
+  // transition dots
+  const e=enc[Math.floor(t)];if(t%1===0&&e.tStart&&MODE!=='nrz')s+=`<circle class="tr" cx="${x}" cy="${y0+28}" r="4"/>`;}
+ s+=`<path class="sig" d="${path}"/>`;
+ if(T<n)s+=`<circle class="pen" cx="${px}" cy="${py}" r="6"/>`;
+ // decode row
+ const dec=decode(enc.map(e=>({a:F(e.a),c:F(e.c)})));
+ s+=`<text class="lbl" x="12" y="${RY.dec}">Bên nhận</text><text class="lvl" x="12" y="${RY.dec+16}">giải mã</text>`;
+ dec.forEach((b,i)=>{if(i+1<=T+1e-9)s+=`<text class="dec" x="${X0+i*CW+CW/2}" y="${RY.dec+4}" text-anchor="middle">${b}</text>`;});
+ svg.innerHTML=s;
+ const shown=Math.min(n,Math.floor(T+1e-9));const okc=dec.slice(0,shown).every((b,i)=>b===bits[i]);
+ let tr=0;for(let i=1;i<lvls.length;i++)if(lvls[i][1]!==lvls[i-1][1])tr++;if(lvls.length&&lvls[0][1]!==F(startLevel()))tr++;
+ $('#stats').innerHTML=`<span>Số bit: <b>${n}</b></span><span>Số lần chuyển mức: <b>${tr}</b></span><span>Tín hiệu/giây so với bit/giây: <b>${MODE==='man'||MODE==='dman'?'2×':'1×'}</b></span>`+(shown?`<span>Giải mã ${flip?'(dây đảo cực)':''}: <b style="color:${okc?'var(--accent)':'var(--bad)'}">${okc?'✓ khớp dữ liệu gốc':'✗ SAI so với dữ liệu gốc'}</b></span>`:'');
+ if(T>0&&T<=n){const i=Math.min(Math.floor(T-1e-9),n-1);$('#explain').innerHTML=`<b>Bit ${i+1}:</b> `+why(i);}
+ if(T>=n&&n)$('#explain').innerHTML='Xong. Thử mẫu <b>00000000</b> hoặc <b>11111111</b>: tín hiệu nằm im một mức → bên nhận không đếm được số bit (vùng ⚠). Thử <b>⇅ Đảo cực dây</b>: mọi bit bị giải mã ngược.';}
+function fmtN(x){return (Math.round(x*2)/2).toString().replace('.',',');}
+function tick(ts){if(last==null)last=ts;const dt=(ts-last)/1000;last=ts;
+ if(playing){T+=dt*0.9*+$('#speed').value;if(T>=bits.length){T=bits.length;playing=false;$('#play').textContent='▶ Chạy lại';}draw();}
+ requestAnimationFrame(tick);}
+$('#play').onclick=()=>{if(T>=bits.length)T=0;playing=!playing;$('#play').textContent=playing?'⏸ Dừng':'▶ Chạy';};
+$('#step').onclick=()=>{playing=false;$('#play').textContent='▶ Chạy';T=Math.min(bits.length,Math.floor(T+1e-9)+1);draw();};
+$('#reset').onclick=()=>{playing=false;T=0;$('#play').textContent='▶ Chạy';$('#explain').innerHTML='Bấm <b>▶ Chạy</b> hoặc <b>⏭ Từng bit</b> để xem tín hiệu được tạo ra.';draw();};
+$('#flip').onclick=()=>{flip=!flip;$('#flip').classList.toggle('on',flip);draw();};
+$('#bits').oninput=()=>{T=0;playing=false;$('#play').textContent='▶ Chạy';rebuild();};
+if($('#start'))$('#start').onchange=()=>{rebuild();};
+document.querySelectorAll('.presets button').forEach(b=>b.onclick=()=>{let p=b.dataset.p;if(p==='rand')p=Array.from({length:10},()=>Math.random()<.5?1:0).join('');$('#bits').value=p;T=0;rebuild();playing=true;$('#play').textContent='⏸ Dừng';});
+$('#theme').onclick=()=>{const r=document.documentElement;const dark=r.dataset.theme?r.dataset.theme==='dark':matchMedia('(prefers-color-scheme: dark)').matches;r.dataset.theme=dark?'light':'dark';try{localStorage.setItem('mmt-theme',r.dataset.theme)}catch(e){}};
+try{const t=localStorage.getItem('mmt-theme');if(t)document.documentElement.dataset.theme=t;}catch(e){}
+rebuild();requestAnimationFrame(tick);
+</script></body></html>

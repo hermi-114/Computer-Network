@@ -22,7 +22,8 @@ h1{font-size:clamp(30px,5vw,44px);line-height:1.15;margin:14px 0 10px;font-weigh
 .meta{display:flex;gap:6px;flex-wrap:wrap}
 .chip{font-size:12px;padding:2px 9px;border-radius:999px;background:var(--soft);color:var(--muted)}
 .chip.b{background:color-mix(in srgb,var(--accent2) 16%,transparent);color:var(--accent2)}
-.best{font-size:13px;color:var(--muted)} .best b{color:var(--accent)}
+.best{font-size:13px;color:var(--muted)}
+h2.sec{font-size:20px;margin:30px 0 14px;display:flex;flex-wrap:wrap;align-items:baseline;gap:10px} h2.sec span{font-size:13.5px;font-weight:500;color:var(--muted)} .best b{color:var(--accent)}
 footer{margin-top:40px;color:var(--muted);font-size:13px}
 </style><script>
 function toggleTheme(){const r=document.documentElement;const dark=r.dataset.theme?r.dataset.theme==='dark':matchMedia('(prefers-color-scheme: dark)').matches;r.dataset.theme=dark?'light':'dark';try{localStorage.setItem('mmt-theme',r.dataset.theme)}catch(e){}}
@@ -30,7 +31,8 @@ try{const t=localStorage.getItem('mmt-theme');if(t)document.documentElement.data
 </script></head><body><div class="wrap">
 <div class="top"><a class="btn" href="index.html">← Trang chủ</a><button class="btn" onclick="toggleTheme()">◐ Giao diện</button></div>
 <span class="eyebrow">Mạng máy tính · Tuần 1–7</span><h1>Những câu hỏi ôn tập</h1>
-<p class="lead">10 đề trắc nghiệm, mỗi đề 20 câu (4 lý thuyết + 16 tính toán), trải đều 4 phần: Giới thiệu, Tầng vật lý, Tầng liên kết dữ liệu, Tầng mạng. Ưu tiên các dạng ⭐ đã xuất hiện trong đề ôn giữa kỳ; phần bổ sung 🔸 chỉ có ở đề 03, 06, 09. Không có câu nào trùng nhau giữa các đề.</p>
+<p class="lead">15 đề trắc nghiệm, mỗi đề 20 câu, trải đều 4 phần: Giới thiệu, Tầng vật lý, Tầng liên kết dữ liệu, Tầng mạng. Không có câu nào trùng nhau giữa các đề.</p>
+<h2 class="sec">Bộ 1 · Đề 01–10 <span>4 lý thuyết + 16 tính toán · ưu tiên dạng ⭐ · phần 🔸 ở đề 03, 06, 09</span></h2>
 <div class="grid"><a class="card" href="on-tap/de-01.html"><div class="ic">📝</div><h2>Đề số 01</h2>
 <div class="meta"><span class="chip">20 câu</span><span class="chip">4 lý thuyết</span><span class="chip">16 tính toán</span></div>
 <p class="best" data-exam="01">Chưa làm</p><span class="go">Làm bài →</span></a><a class="card" href="on-tap/de-02.html"><div class="ic">📝</div><h2>Đề số 02</h2>
@@ -52,5 +54,17 @@ try{const t=localStorage.getItem('mmt-theme');if(t)document.documentElement.data
 <p class="best" data-exam="09">Chưa làm</p><span class="go">Làm bài →</span></a><a class="card" href="on-tap/de-10.html"><div class="ic">📝</div><h2>Đề số 10</h2>
 <div class="meta"><span class="chip">20 câu</span><span class="chip">4 lý thuyết</span><span class="chip">16 tính toán</span></div>
 <p class="best" data-exam="10">Chưa làm</p><span class="go">Làm bài →</span></a></div>
+<h2 class="sec">Bộ 2 · Đề 11–15 <span>10 lý thuyết + 10 tính toán · câu hỏi mới hoàn toàn</span></h2>
+<div class="grid"><a class="card" href="on-tap/de-11.html"><div class="ic">📝</div><h2>Đề số 11</h2>
+<div class="meta"><span class="chip">20 câu</span><span class="chip">10 lý thuyết</span><span class="chip">10 tính toán</span></div>
+<p class="best" data-exam="11">Chưa làm</p><span class="go">Làm bài →</span></a><a class="card" href="on-tap/de-12.html"><div class="ic">📝</div><h2>Đề số 12</h2>
+<div class="meta"><span class="chip">20 câu</span><span class="chip">10 lý thuyết</span><span class="chip">10 tính toán</span></div>
+<p class="best" data-exam="12">Chưa làm</p><span class="go">Làm bài →</span></a><a class="card" href="on-tap/de-13.html"><div class="ic">📝</div><h2>Đề số 13</h2>
+<div class="meta"><span class="chip">20 câu</span><span class="chip">10 lý thuyết</span><span class="chip">10 tính toán</span></div>
+<p class="best" data-exam="13">Chưa làm</p><span class="go">Làm bài →</span></a><a class="card" href="on-tap/de-14.html"><div class="ic">📝</div><h2>Đề số 14</h2>
+<div class="meta"><span class="chip">20 câu</span><span class="chip">10 lý thuyết</span><span class="chip">10 tính toán</span></div>
+<p class="best" data-exam="14">Chưa làm</p><span class="go">Làm bài →</span></a><a class="card" href="on-tap/de-15.html"><div class="ic">📝</div><h2>Đề số 15</h2>
+<div class="meta"><span class="chip">20 câu</span><span class="chip">10 lý thuyết</span><span class="chip">10 tính toán</span></div>
+<p class="best" data-exam="15">Chưa làm</p><span class="go">Làm bài →</span></a></div>
 <footer>Điểm cao nhất được lưu trên trình duyệt này. Bản .md của từng đề nằm trong thư mục <code>on-tap/</code>.</footer></div>
 <script>document.querySelectorAll('.best').forEach(p=>{try{const b=localStorage.getItem('mmt-best-'+p.dataset.exam);if(b!==null)p.innerHTML='Điểm cao nhất: <b>'+b+'/20</b>'}catch(e){}});</script></body></html>
